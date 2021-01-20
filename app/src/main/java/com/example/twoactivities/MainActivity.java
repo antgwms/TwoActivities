@@ -40,20 +40,19 @@ public class MainActivity extends AppCompatActivity {
         String message = mMessageEditText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivityForResult(intent, TEXT_REQUEST);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        @Override
-        public void onActivityResult ( int requestCode,
-        int resultCode, Intent data){
-
-            super.onActivityResult(requestCode, resultCode, data);
-            if (resultCode == TEXT_REQUEST) {
-                if (resultCode == RESULT_OK) {
-                    String reply = data.getStringExtra(SecondActivity.EXTRA_REPLY);
-                    mReplyHeadTextView.setVisibility(View.VISABLE);
-                    mReplyTextView.setText(reply);
-                    mReplyTextView.setVisibility(View.VISABLE);
+        if (resultCode == TEXT_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                String reply;
+                reply = data.getStringExtra(SecondActivity.EXTRA_REPLY);
+                mReplyHeadTextView.setVisibility(View.VISIBLE);
+                mReplyTextView.setText(reply);
+                mReplyTextView.setVisibility(View.VISIBLE);
                 }
             }
         }
     }
-}
