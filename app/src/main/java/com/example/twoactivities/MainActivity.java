@@ -25,11 +25,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d(LOG_TAG, "-------");
+        Log.d(LOG_TAG, "onCreate");
+
+        // initialise the view variables
         mMessageEditText = findViewById(R.id.editText_main);
         mReplyHeadTextView = findViewById(R.id.text_header_reply);
         mReplyTextView = findViewById(R.id.text_message_reply);
-        Log.d(LOG_TAG, "-------");
-        Log.d(LOG_TAG, "onCreate");
     }
 
     @Override
@@ -88,5 +91,15 @@ public class MainActivity extends AppCompatActivity {
                 mReplyTextView.setVisibility(View.VISIBLE);
                 }
             }
+        }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+        if (mReplyHeadTextView.getVisability() == View.VISIBLE) {
+        outState.putBoolean("reply_visible)", true);
+        outState.putString("reply_text",
+                mReplyTextView.getText().toString());
         }
     }
