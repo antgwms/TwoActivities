@@ -1,11 +1,9 @@
 package com.example.twoactivities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -22,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView mReplyHeadTextView;
     private TextView mReplyTextView;
     private EditText mMessageEditText;
-    private Bundle outState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,20 +33,7 @@ public class MainActivity extends AppCompatActivity {
         mMessageEditText = findViewById(R.id.editText_main);
         mReplyHeadTextView = findViewById(R.id.text_header_reply);
         mReplyTextView = findViewById(R.id.text_message_reply);
-
-        //method to restore the state
-        if (savedInstanceState != null) {
-            boolean isVisible =
-                    savedInstanceState.getBoolean("reply_visible");
-            if (isVisible) {
-                mReplyHeadTextView.setVisibility(View.VISIBLE);
-                mReplyTextView.setText(savedInstanceState.getString("reply_text"));
-                mReplyTextView.setVisibility(View.VISIBLE);
-        }
-        }
     }
-
-    //add lifecycle @override callback methods to the activity
 
     @Override
     protected void onStart() {
@@ -61,20 +45,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Log.d(LOG_TAG, "onPause");
-    }
-
-    //add @override method to onSaveInstanceState to restore activity data via bundle if there's a change in configuration
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        this.outState = outState;
-        super.onSaveInstanceState(outState);
-        //check to see if the header is currently visible, and if so put that visibility state into the bundle
-        if (mReplyHeadTextView.getVisibility() == View.VISIBLE) {
-            outState.putBoolean("reply_visible", true);
-            outState.putBoolean("reply_text",
-                    Boolean.parseBoolean(mReplyTextView.getText().toString()));
-            //the parseBoolean element was suggested by Android, not in Fundamentals
-        }
     }
 
     @Override
@@ -108,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivityForResult(intent, TEXT_REQUEST);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -120,8 +89,17 @@ public class MainActivity extends AppCompatActivity {
                 mReplyHeadTextView.setVisibility(View.VISIBLE);
                 mReplyTextView.setText(reply);
                 mReplyTextView.setVisibility(View.VISIBLE);
+                }
             }
         }
-    }
-}
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+        if (mReplyHeadTextView.getVisability() == View.VISIBLE) {
+        outState.putBoolean("reply_visible)", true);
+        outState.putString("reply_text",
+                mReplyTextView.getText().toString());
+        }
+    }
